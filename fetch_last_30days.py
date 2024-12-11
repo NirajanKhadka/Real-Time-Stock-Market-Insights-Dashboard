@@ -5,12 +5,12 @@ import psycopg2
 from datetime import datetime,timedelta
 
 # Retrieve configuration values from environment variables
-api_key = 'KO8I45UIUJVKO1IK'
-db_name = 'postgres'
-db_user = 'shaaguunz'
-db_password = 'shaaguunz99'
-db_host = 'stockpostgres.cp680kwiyo9l.us-east-1.rds.amazonaws.com'
-db_port = '5432'
+api_key = 'Enter your API key here'
+db_name = 'Enter your database name here'
+db_user = 'Enter your database username here'
+db_password = 'Enter your database password here'
+db_host = 'Enter your database host here'
+db_port = 'Enter your database port here'
 
 # List of FAANG stocks
 stocks = ['META', 'AAPL', 'AMZN', 'NFLX', 'GOOGL']
