@@ -1,0 +1,12 @@
+ALPHA_VANTAGE_API_KEY
+KO8I45UIUJVKO1IK
+DB_HOST
+stockpostgres.cp680kwiyo9l.us-east-1.rds.amazonaws.com
+DB_NAME
+postgres
+DB_PASSWORD
+shaaguunz99
+DB_PORT
+5432
+DB_USER
+shaaguunz

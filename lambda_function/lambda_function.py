@@ -3,6 +3,7 @@ import json
 import requests
 import psycopg2
 from datetime import datetime
+import logging
 
 # Environment variables for database and API configuration
 db_name = os.environ['DB_NAME']
@@ -47,31 +48,55 @@ def insert_stock_data(cursor, stock, timestamp, values):
     """
     cursor.execute(query, (stock, timestamp, open_price, high_price, low_price, close_price, volume))
 
-def lambda_handler(event, context):
-    # Connect to the database
-    conn = psycopg2.connect(
-        dbname=db_name,
-        user=db_user,
-        password=db_password,
-        host=db_host,
-        port=db_port
-    )
-    cursor = conn.cursor()
+import logging
 
+def lambda_handler(event, context):
+    logging.basicConfig(level=logging.INFO)
+    
+    # Connect to the database
+    try:
+        conn = psycopg2.connect(
+            dbname=db_name,
+            user=db_user,
+            password=db_password,
+            host=db_host,
+            port=db_port
+        )
+        cursor = conn.cursor()
+        logging.info("Database connection established.")
+    except Exception as e:
+        logging.error(f"Error connecting to database: {e}")
+        return {
+            'statusCode': 500,
+            'body': json.dumps("Failed to connect to database.")
+        }
+
+    # Fetch today's data for each stock
     for stock in stocks:
-        print(f"Fetching today's data for {stock}...")
+        logging.info(f"Fetching today's data for {stock}...")
         stock_data = fetch_today_data(stock)
         if stock_data:
             for timestamp, values in stock_data.items():
                 insert_stock_data(cursor, stock, timestamp, values)
+                logging.info(f"Inserted data for {stock} on {timestamp}.")
+        else:
+            logging.warning(f"No data available for {stock} today.")
 
     # Commit and close the connection
-    conn.commit()
-    cursor.close()
-    conn.close()
-    print("Today's data successfully added to the database.")
+    try:
+        conn.commit()
+        logging.info("Today's data successfully committed to the database.")
+    except Exception as e:
+        logging.error(f"Error committing data to database: {e}")
+        return {
+            'statusCode': 500,
+            'body': json.dumps("Failed to commit data.")
+        }
+    finally:
+        cursor.close()
+        conn.close()
 
     return {
         'statusCode': 200,
-        'body': json.dumps("Today's stock data has been updated.")
+        'body': json.dumps("Today's stock data has been updated successfully.")
     }
