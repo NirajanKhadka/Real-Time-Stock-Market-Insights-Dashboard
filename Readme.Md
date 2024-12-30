@@ -1,11 +1,37 @@
 # 1. Real-Time Stock Market Insights Dashboard 📊💹
 
-## Introduction 🌟
+**Real-Time Stock Market Insights Dashboard** is an end-to-end solution designed to provide actionable insights into the performance of FAANG stocks. This automated system integrates live stock data, processes it in real-time, and delivers dynamic visualizations through an interactive Power BI dashboard. Users can explore key metrics like moving averages, volume trends, price changes, and volatility, along with top-performing stocks over customizable timeframes. With seamless automation and user-friendly visuals, the project simplifies stock analysis for quick and informed decision-making.
+
+
+---
+
+# Table of Contents
+1. [Introduction](#Introduction)
+2. [Technologies Used](#Technologies-Used)
+3. [Getting Started](#Getting-Started)
+4. [Getting the API Key](#getting-the-api-key)
+5. [Setting Up the AWS RDS Database ](#setting-up-the-aws-rds-database)
+   - [Creating the RDS Database](#creating-the-rds-database)
+   - [Setting Up the Database on AWS RDS](#setting-up-the-database-on-aws-rds)
+   - [Connecting to the Database Using pgAdmin](#connecting-to-the-database-using-pgadmin)
+6. [How the Data is Fetched](#how-the-data-is-fetched)
+   - [Fetching the Last 30 Days of Data](#fetching-the-last-30-days-of-data)
+   - [Fetching Daily Data and Setting Up Lambda](#fetching-daily-data-and-setting-up-lambda)
+7. [Setting Up the Power BI Dashboard ](#setting-up-the-power-bi-dashboard)
+   - [Setting Up the Power BI Connection to PostgreSQL](#setting-up-the-power-bi-connection-to-postgresql)
+   - [Visuals, Measures, and Their Purpose in the Dashboard](#visuals-measures-and-their-purpose-in-the-dashboard)
+8. [Final Thoughts](#final-thoughts)
+
+
+---
+### Introduction 
 Welcome to this **Real-Time Stock Market Insights Dashboard**. This solution fetch stock market data from major FAANG companies (Meta, Apple, Amazon, Netflix and Google) and visualize it. Real time and historical stock data comes through the dashboard using the Alpha Vantage API so that it's always up to date. Here the data is stored in a PostgreSQL database for querying for analysis and can be displayed in Power BI.
 
 It features traditional price history as well as price changes, volatility, and average returns all versus customizable time periods for owners to explore. This dashboard takes stock data metrics such as daily fluctuations or risk volatility and calculates average returns, so you get a clear understanding of whether or not a stock is headed in your favors.
+
 ---
-## Technologies Used 🛠️
+
+### Technologies Used 
 The **Real-Time Stock Market Insights Dashboard** uses a combination of technologies to ensure efficient data collection, storage, and visualization:
 - **Python 🐍**: A powerful scripting language for fetching stock data, processing and interacting with APIs.
 - **Alpha Vantage API 📡**: Offers free access to tidy stock market data, including historical and real time stock prices as time series data.
@@ -13,26 +39,32 @@ The **Real-Time Stock Market Insights Dashboard** uses a combination of technolo
 - **AWS Lambda ☁️**: It is a serverless computing service that will do the work of fetching stock data and insert into the PostgreSQL database every hour.
 - **Power BI 📊**: It is a business analytics tool that allows easy visualization, and creation of interactive dashboards from PostgreSQL database, based on the data stored in the database, to see the trends of the stock market.
 
-
-
-# Table of Contents
-
-1. [Getting the API Key](#getting-the-api-key)
-2. [Setting Up the AWS RDS Database ](#setting-up-the-aws-rds-database)
-   - [Creating the RDS Database](#creating-the-rds-database)
-   - [Setting Up the Database on AWS RDS](#setting-up-the-database-on-aws-rds)
-   - [Connecting to the Database Using pgAdmin](#connecting-to-the-database-using-pgadmin)
-3. [How the Data is Fetched](#how-the-data-is-fetched)
-   - [Fetching the Last 30 Days of Data](#fetching-the-last-30-days-of-data)
-   - [Fetching Daily Data and Setting Up Lambda](#fetching-daily-data-and-setting-up-lambda)
-4. [Setting Up the Power BI Dashboard ](#setting-up-the-power-bi-dashboard)
-   - [Setting Up the Power BI Connection to PostgreSQL](#setting-up-the-power-bi-connection-to-postgresql)
-   - [Visuals, Measures, and Their Purpose in the Dashboard](#visuals-measures-and-their-purpose-in-the-dashboard)
-5. [Final Thoughts](#final-thoughts)
-
-
 ---
 
+### Getting Started
+
+To begin working with this project, follow the instructions below:
+
+### Prerequisites:
+- **Python 3.10**: 
+
+### Install Required Libraries:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/NirajanKhadka/Tracking-User-Engagement-SQL_EXCEL_PYTHON.git
+   ```
+
+2. Navigate to the project directory:
+```bash
+cd your-repository-name
+
+```
+3. Install Python dependencies:
+```python
+pip install -r requirements.txt
+
+```
+---
 ###  Getting the API Key 
 To access stock market data from the Alpha Vantage API, you'll need to create an API key. Follow these steps to obtain one:
 
