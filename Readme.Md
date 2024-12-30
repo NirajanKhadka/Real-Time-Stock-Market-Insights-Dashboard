@@ -468,33 +468,6 @@ Four bar charts rank the stocks in different categories based on their performan
 - **Top 3 by Average Return**: This chart shows the top 3 stocks with the highest average return over the last 30 days, giving insights into the most profitable investments.
 - **Top 3 by Volatility**: Displays the top 3 stocks with the highest price volatility over the last 30 days. This metric is important for risk-conscious investors looking to understand the potential for significant price fluctuations.
 
-## 2. Interactive Elements and User Experience
-
-### a. Dynamic Data Updates:
-- The dashboard automatically updates all visual components whenever a new stock is selected or the date range is adjusted. This ensures that the user always sees up-to-date information without the need for manual refreshes.
-
-### b. Intuitive Navigation:
-- Users can easily navigate between the different FAANG stocks using the stock symbols at the top.
-- The dashboard’s layout is designed to be clear and user-friendly, allowing even novice investors to quickly understand and utilize the information provided.
-
-### c. Customization and Flexibility:
-- Users have the option to adjust the time range (7 days or 30 days), which dynamically changes the displayed data, including KPIs and bar charts.
-
-
-## 3. Data Sources and Back-End Architecture
-
-The dashboard relies on a robust back-end architecture to fetch, process, and display real-time stock data. The key components are as follows:
-
-### a. Data Fetching via APIs:
-- The stock market data is fetched through APIs from reliable financial data providers, such as **Yahoo Finance** or **Alpha Vantage**. These APIs provide real-time data on stock prices, volumes, and other critical metrics.
-  
-### b. AWS Lambda for Data Processing:
-- **AWS Lambda** functions are used to periodically fetch and process stock market data from the APIs. Lambda enables serverless execution, ensuring efficient and cost-effective data updates.
-- The functions run at regular intervals, updating the stock data in the database and triggering the necessary refreshes on the dashboard.
-
-### c. Database Storage:
-- Stock data is stored in a **PostgreSQL** database hosted on **AWS RDS**. This allows for structured storage of historical data (open price, close price, volume) and efficient querying.
-- Data is organized by stock symbol and timestamp, enabling fast retrieval and analysis of historical performance.
 
 
 
