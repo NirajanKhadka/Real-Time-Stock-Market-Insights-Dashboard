@@ -1,39 +1,38 @@
 # 1. Real-Time Stock Market Insights Dashboard 📊💹
 
 ## Introduction 🌟
-Welcome to the **Real-Time Stock Market Insights Dashboard** project! This innovative solution is designed to fetch and visualize stock market data for major FAANG companies—Meta, Apple, Amazon, Netflix, and Google. With the help of the Alpha Vantage API, this dashboard pulls real-time and historical stock data, providing an up-to-date view of stock performance. The data is seamlessly integrated into a PostgreSQL database, where it can be queried for analysis and displayed through dynamic Power BI dashboards.
+Welcome to this **Real-Time Stock Market Insights Dashboard**. This solution fetch stock market data from major FAANG companies (Meta, Apple, Amazon, Netflix and Google) and visualize it. Real time and historical stock data comes through the dashboard using the Alpha Vantage API so that it's always up to date. Here the data is stored in a PostgreSQL database for querying for analysis and can be displayed in Power BI.
 
-This project enables users to explore various stock performance metrics, including price changes, trading volume, and other key indicators, over customizable time periods. Whether you're a data enthusiast, financial analyst, or simply tracking the performance of your favorite stocks, this project offers an automated and interactive way to gain insights from real-time data.
-
+It features traditional price history as well as price changes, volatility, and average returns all versus customizable time periods for owners to explore. This dashboard takes stock data metrics such as daily fluctuations or risk volatility and calculates average returns, so you get a clear understanding of whether or not a stock is headed in your favors.
 ## Technologies Used 🛠️
 The **Real-Time Stock Market Insights Dashboard** uses a combination of technologies to ensure efficient data collection, storage, and visualization:
-- **Python 🐍**: A powerful scripting language used for fetching stock data, processing it, and interacting with APIs.
-- **Alpha Vantage API 📡**: Provides free access to high-quality stock market data, including time-series data for historical and real-time stock prices.
-- **PostgreSQL 🗄️**: A reliable relational database management system used for storing and managing stock data securely and efficiently.
-- **AWS Lambda ☁️**: A serverless computing service that automates the process of fetching stock data and inserting it into the PostgreSQL database on a regular basis.
-- **Power BI 📊**: A business analytics tool used to visualize and create interactive dashboards from the data stored in the PostgreSQL database, offering insights into stock market trends.
+- **Python 🐍**: A powerful scripting language for fetching stock data, processing and interacting with APIs.
+- **Alpha Vantage API 📡**: Offers free access to tidy stock market data, including historical and real time stock prices as time series data.
+- **PostgreSQL 🗄️**: A secured and efficient relational database management system used in storing and managing stock data.
+- **AWS Lambda ☁️**: It is a serverless computing service that will do the work of fetching stock data and insert into the PostgreSQL database every hour.
+- **Power BI 📊**: It is a business analytics tool that allows easy visualization, and creation of interactive dashboards from PostgreSQL database, based on the data stored in the database, to see the trends of the stock market.
 
 
 
 # Table of Contents
 
-[Getting the API Key](#getting-the-api-key)
-[Setting Up the AWS RDS Database ](#setting-up-the-aws-rds-database)
+1. [Getting the API Key](#getting-the-api-key)
+2. [Setting Up the AWS RDS Database ](#setting-up-the-aws-rds-database)
    - [Creating the RDS Database](#creating-the-rds-database)
    - [Setting Up the Database on AWS RDS](#setting-up-the-database-on-aws-rds)
    - [Connecting to the Database Using pgAdmin](#connecting-to-the-database-using-pgadmin)
-[How the Data is Fetched](#how-the-data-is-fetched)
+3. [How the Data is Fetched](#how-the-data-is-fetched)
    - [Fetching the Last 30 Days of Data](#fetching-the-last-30-days-of-data)
    - [Fetching Daily Data and Setting Up Lambda](#fetching-daily-data-and-setting-up-lambda)
-[Setting Up the Power BI Dashboard ](#setting-up-the-power-bi-dashboard)
+4. [Setting Up the Power BI Dashboard ](#setting-up-the-power-bi-dashboard)
    - [Setting Up the Power BI Connection to PostgreSQL](#setting-up-the-power-bi-connection-to-postgresql)
    - [Visuals, Measures, and Their Purpose in the Dashboard](#visuals-measures-and-their-purpose-in-the-dashboard)
-[Final Thoughts ✨](#final-thoughts-✨)
+5. [Final Thoughts](#final-thoughts)
 
 
 ---
 
-### Getting the API Key 
+###  Getting the API Key 
 To access stock market data from the Alpha Vantage API, you'll need to create an API key. Follow these steps to obtain one:
 
 1. Go to the [Alpha Vantage API Key page](https://www.alphavantage.co/support/#api-key).
@@ -421,7 +420,46 @@ In this section, we will go over the various visualizations used in the Power BI
   <img src="images/dashboard_main.png">
 </p>
 
+## Dashboard Overview
 
-## 7. Final Thoughts ✨
+The **Real-Time Stock Market Insights Dashboard** offers a clear and interactive way to visualize key stock market metrics for major FAANG companies. Built using **Power BI**, the dashboard provides an intuitive interface for analyzing stock performance through various visualizations.
+
+### Key Features:
+
+#### 1. **Price Change Visualization**
+Displays the daily price change for each stock.
+
+**DAX Formula:**
+```DAX
+Price Change = 
+'StockData'[Close] - 
+CALCULATE(LASTNONBLANK('StockData'[Close], 1), 
+PREVIOUSMONTH('StockData'[Date]))
+```
+#### 2. **Volatility Analysis**
+A measure of how much the stock price varies over a set time period.
+
+**DAX Formula:**
+```DAX
+Volatility = 
+STDEVX.P('StockData', 'StockData'[Price Change])
+
+```
+
+#### 3. **Average Return**
+Displays the daily price change for each stock.
+
+**DAX Formula:**
+```DAX
+Average Return = 
+AVERAGEX('StockData', 'StockData'[Price Change])
+
+```
+
+
+
+
+
+### Final Thoughts 
 
 By integrating AWS Lambda, PostgreSQL, and Power BI, we’ve automated the process of fetching, storing, and visualizing stock market data in a powerful, dynamic dashboard. This setup allows for easy monitoring of stock data, with real-time updates and the ability to scale as more data becomes available.
