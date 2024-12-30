@@ -45,6 +45,7 @@ To access stock market data from the Alpha Vantage API, you'll need to create an
 
 
 ###  Setting Up the AWS RDS Database 
+---
 
 #### Creating the RDS Database
 
@@ -64,6 +65,7 @@ To set up a PostgreSQL database on AWS RDS, follow these steps:
      - **Storage**: Choose the storage type and size.
      - **VPC**: Choose the default VPC or configure your own network settings.
    - After configuring, click **Create Database** and wait for the instance to be created.
+---
 
 #### Setting Up the Database on AWS RDS
 
@@ -74,6 +76,7 @@ To set up a PostgreSQL database on AWS RDS, follow these steps:
 2. **Get the Endpoint**:
    - Once the RDS instance is available, go to the **Databases** section in the AWS RDS console.
    - Click on your database instance and copy the **Endpoint** (this will be the host you’ll use to connect to the database).
+---
 
 #### Connecting to the Database Using pgAdmin
 
@@ -113,9 +116,9 @@ CREATE TABLE stock_data (
 );
 ```
 Click Execute to run the query and create the table.
+---
 
-
-###  How the Data is Fetched 
+####  How the Data is Fetched 
 
 The data for this project is fetched using the **Alpha Vantage API**, a free service that provides real-time and historical stock data. The data fetching process is broken down into two main steps:
 
@@ -123,7 +126,7 @@ The data for this project is fetched using the **Alpha Vantage API**, a free ser
 
 To fetch the last 30 days of stock data, we will use the `fetch_last_30days.py` script. The steps involved are:
 
-#### a. **Making an API Request**
+#### 1. **Making an API Request**
 
 The first step is to make a request to the Alpha Vantage API. The endpoint used for this request is:
 
@@ -134,7 +137,7 @@ Where:
 - `<SYMBOL>` is the stock symbol (e.g., `AAPL` for Apple, `GOOGL` for Google).
 - `<API_KEY>` is your unique Alpha Vantage API key.
 
-#### b. **Parsing the API Response**
+#### 2. **Parsing the API Response**
 
 The API responds with data in JSON format. An example of the response structure is as follows:
 
@@ -168,7 +171,7 @@ The API responds with data in JSON format. An example of the response structure 
 }
 ```
 
-#### c. **Filtering the Data** 🧹
+#### 3. **Filtering the Data** 🧹
 
 Once the API response is received, the next step is to filter out the relevant data for the last 30 days. This is done by comparing the dates in the response to the current date. We retrieve the stock data from the `Time Series (Daily)` section of the API response and filter it based on the current date.
 
@@ -191,13 +194,13 @@ recent_data = {
     if datetime.strptime(k, '%Y-%m-%d') >= today - timedelta(days=30)
 }
 ```
-
-#### d . ** Running the code**
+---
+#### 4. ** Running the code**
 
 
 To fetch the last 30 days of stock data, we will use the `fetch_last_30days.py` script. Follow the steps below to set everything up and run the code.
 
-### 1. **Set Environment Variables** 🔑
+#### a. **Set Environment Variables** 🔑
 
 Before running the script, you'll need to set some environment variables for the Alpha Vantage API and your database connection. These include:
 
@@ -227,7 +230,7 @@ python fetch_last_30days.py
 Verify Data Insertion: After running the script, check your PostgreSQL database (e.g., using pgAdmin or another SQL client) to verify that the stock data has been correctly inserted into the stock_data table.
 
 
-
+---
 
 ####  Fetching Daily Data and Setting Up Lambda
 
@@ -257,6 +260,7 @@ def fetch_stock_data(stock):
     else:
         raise ValueError(f"Failed to fetch data for {stock}: {data.get('Error Message')}")
 ```
+---
 ### Setting Up Lambda for Scheduled Fetches ⚙️
 
 To automate the process of fetching stock data, we'll use **AWS Lambda** to run the `lambda_function.py` script. This Lambda function will be triggered by **AWS CloudWatch Events** to run on a schedule. Here's how to set it up:
@@ -299,6 +303,7 @@ After uploading the zip file, you can test your Lambda function using the Lambda
    - If the test results indicate an issue or if you want to view the details of the execution, go to the **CloudWatch Logs** section.
    - In the CloudWatch console, navigate to the **Logs** section and search for your Lambda function’s logs.
    - You can review the logs to check for any errors or see the successful execution of the Lambda function.
+---
 
 ### Setting Up CloudWatch Event for Scheduled Lambda Triggers ⏲️
 
@@ -341,6 +346,7 @@ The CloudWatch Event will now trigger the Lambda function according to the sched
 
 - To ensure the CloudWatch Event is working as expected, you can check the **CloudWatch Logs** to verify that the Lambda function was triggered at the scheduled time.
 - You can also manually execute the CloudWatch Event to confirm everything is set up correctly.
+---
 
 ### Setting Up the Power BI Dashboard 
 
@@ -377,7 +383,7 @@ Before connecting Power BI to PostgreSQL, you need to install the **ODBC driver*
    - **Database**: Enter the database name.
 
 Click **Test** to ensure the connection works and then click **OK**.
-
+---
 ### 2. **Connecting Power BI to PostgreSQL using ODBC**
 
 1. Open **Power BI Desktop**.
@@ -459,7 +465,7 @@ AVERAGEX('StockData', 'StockData'[Price Change])
 
 
 
-
+---
 ### Final Thoughts 
 
 By integrating AWS Lambda, PostgreSQL, and Power BI, we’ve automated the process of fetching, storing, and visualizing stock market data in a powerful, dynamic dashboard. This setup allows for easy monitoring of stock data, with real-time updates and the ability to scale as more data becomes available.
