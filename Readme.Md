@@ -4,6 +4,7 @@
 Welcome to this **Real-Time Stock Market Insights Dashboard**. This solution fetch stock market data from major FAANG companies (Meta, Apple, Amazon, Netflix and Google) and visualize it. Real time and historical stock data comes through the dashboard using the Alpha Vantage API so that it's always up to date. Here the data is stored in a PostgreSQL database for querying for analysis and can be displayed in Power BI.
 
 It features traditional price history as well as price changes, volatility, and average returns all versus customizable time periods for owners to explore. This dashboard takes stock data metrics such as daily fluctuations or risk volatility and calculates average returns, so you get a clear understanding of whether or not a stock is headed in your favors.
+---
 ## Technologies Used 🛠️
 The **Real-Time Stock Market Insights Dashboard** uses a combination of technologies to ensure efficient data collection, storage, and visualization:
 - **Python 🐍**: A powerful scripting language for fetching stock data, processing and interacting with APIs.
@@ -115,14 +116,15 @@ CREATE TABLE stock_data (
     CONSTRAINT unique_stock_timestamp UNIQUE(symbol, timestamp)
 );
 ```
-Click Execute to run the query and create the table.
+**Click Execute to run the query and create the table.**
+
 ---
 
-####  How the Data is Fetched 
+###  How the Data is Fetched 
 
 The data for this project is fetched using the **Alpha Vantage API**, a free service that provides real-time and historical stock data. The data fetching process is broken down into two main steps:
 
-###  **Fetching the Last 30 Days of Stock Data**
+####  **Fetching the Last 30 Days of Stock Data**
 
 To fetch the last 30 days of stock data, we will use the `fetch_last_30days.py` script. The steps involved are:
 
@@ -195,7 +197,7 @@ recent_data = {
 }
 ```
 ---
-#### 4. ** Running the code**
+#### 4. **Running the code**
 
 
 To fetch the last 30 days of stock data, we will use the `fetch_last_30days.py` script. Follow the steps below to set everything up and run the code.
@@ -280,9 +282,8 @@ To automate the process of fetching stock data, we'll use **AWS Lambda** to run 
 3. **Upload Your Lambda Code**:
    - In the Lambda function's console, upload your `lambda_function.zip` .
 
-4. **Testing the Lambda function **:
-
-After uploading the zip file, you can test your Lambda function using the Lambda console. Follow these steps:
+4. **Testing the Lambda function**:
+   -After uploading the zip file, you can test your Lambda function using the Lambda console. Follow these steps:
 
 1. **Create a Test Event**:
    - In the Lambda console, go to your newly created function (`fetch_stock_data`).
@@ -426,41 +427,89 @@ In this section, we will go over the various visualizations used in the Power BI
   <img src="images/dashboard_main.png">
 </p>
 
-## Dashboard Overview
+# Stock Market Dashboard - Detailed Overview
 
-The **Real-Time Stock Market Insights Dashboard** offers a clear and interactive way to visualize key stock market metrics for major FAANG companies. Built using **Power BI**, the dashboard provides an intuitive interface for analyzing stock performance through various visualizations.
+The **Stock Market Dashboard** is an interactive and data-driven visualization tool designed to provide users with real-time insights into the performance of the top 5 FAANG stocks: **Facebook**, **Apple**, **Amazon**, **Netflix**, and **Google**. The dashboard displays critical stock data, including opening and closing prices, trading volume, and moving averages. It also highlights key trends and patterns, enabling investors to make informed decisions. This section provides a detailed overview of the dashboard’s features, functionalities, and underlying architecture.
 
-### Key Features:
+## 1. Dashboard Layout and Features
 
-#### 1. **Price Change Visualization**
-Displays the daily price change for each stock.
+The dashboard is divided into several interactive and informative sections:
 
-**DAX Formula:**
-```DAX
-Price Change = 
-'StockData'[Close] - 
-CALCULATE(LASTNONBLANK('StockData'[Close], 1), 
-PREVIOUSMONTH('StockData'[Date]))
-```
-#### 2. **Volatility Analysis**
-A measure of how much the stock price varies over a set time period.
+### a. Date Selector:
+- The date selector allows users to choose the time range for viewing stock performance. It supports two options:
+  - **Last 7 Days**: Displays stock data for the past week, enabling users to analyze short-term trends.
+  - **Last 30 Days**: Provides data for the past month, allowing users to gain insights into medium-term stock performance.
+- The date selector updates the displayed data dynamically, ensuring that users always have access to the most relevant information based on their chosen time range.
 
-**DAX Formula:**
-```DAX
-Volatility = 
-STDEVX.P('StockData', 'StockData'[Price Change])
+### b. FAANG Stocks Overview:
+- At the top of the dashboard, the symbols of the top 5 FAANG stocks (Facebook, Apple, Amazon, Netflix, Google) are displayed. Users can select any of these stocks to view detailed data for that particular stock.
+  - Each stock symbol is displayed alongside its name to ensure clarity.
+  - The user can easily switch between stocks, and the dashboard updates all relevant data (KPIs and charts) accordingly.
 
-```
+### c. Key Performance Indicators (KPIs):
+The KPI section provides essential data points for each selected stock. The following KPIs are displayed:
+- **Open Price**: The price at which the stock opened for the day.
+- **Close Price**: The price at which the stock closed.
+- **Volume**: The total number of shares traded during the day.
+- **Moving Average of Closing Price**: This metric provides the average closing price of the stock for the past `n` days, helping smooth out daily price fluctuations and identify trends.
+- **Moving Average of Volume**: This shows the average volume of shares traded over the past `n` days, offering insights into the stock’s trading activity.
 
-#### 3. **Average Return**
-Displays the daily price change for each stock.
+### d. 30-Day Overview for Each Stock:
+- This section displays a more detailed view of the stock’s performance over the last 30 days, covering:
+  - **Open Price**: The price at which the stock opened on each day over the last 30 days.
+  - **Close Price**: The price at which the stock closed on each day over the last 30 days.
+  - **Volume**: The number of shares traded for each of the last 30 days.
+- These metrics provide a historical perspective, allowing users to observe trends and patterns over a one-month period.
 
-**DAX Formula:**
-```DAX
-Average Return = 
-AVERAGEX('StockData', 'StockData'[Price Change])
+### e. Top 3 Ranked Bar Charts (Last 30 Days):
+Four bar charts rank the stocks in different categories based on their performance in the past 30 days:
+- **Top 3 by Highest Price Change**: This chart ranks the top 3 stocks with the highest price change (percentage change) over the last 30 days. It allows users to quickly spot the stocks with the most significant price fluctuations.
+- **Top 3 by Volume Traded**: Displays the top 3 stocks with the highest trading volumes in the last 30 days. This helps investors identify the most actively traded stocks.
+- **Top 3 by Average Return**: This chart shows the top 3 stocks with the highest average return over the last 30 days, giving insights into the most profitable investments.
+- **Top 3 by Volatility**: Displays the top 3 stocks with the highest price volatility over the last 30 days. This metric is important for risk-conscious investors looking to understand the potential for significant price fluctuations.
 
-```
+## 2. Interactive Elements and User Experience
+
+### a. Dynamic Data Updates:
+- The dashboard automatically updates all visual components whenever a new stock is selected or the date range is adjusted. This ensures that the user always sees up-to-date information without the need for manual refreshes.
+
+### b. Intuitive Navigation:
+- Users can easily navigate between the different FAANG stocks using the stock symbols at the top.
+- The dashboard’s layout is designed to be clear and user-friendly, allowing even novice investors to quickly understand and utilize the information provided.
+
+### c. Customization and Flexibility:
+- Users have the option to adjust the time range (7 days or 30 days), which dynamically changes the displayed data, including KPIs and bar charts.
+
+
+## 3. Data Sources and Back-End Architecture
+
+The dashboard relies on a robust back-end architecture to fetch, process, and display real-time stock data. The key components are as follows:
+
+### a. Data Fetching via APIs:
+- The stock market data is fetched through APIs from reliable financial data providers, such as **Yahoo Finance** or **Alpha Vantage**. These APIs provide real-time data on stock prices, volumes, and other critical metrics.
+  
+### b. AWS Lambda for Data Processing:
+- **AWS Lambda** functions are used to periodically fetch and process stock market data from the APIs. Lambda enables serverless execution, ensuring efficient and cost-effective data updates.
+- The functions run at regular intervals, updating the stock data in the database and triggering the necessary refreshes on the dashboard.
+
+### c. Database Storage:
+- Stock data is stored in a **PostgreSQL** database hosted on **AWS RDS**. This allows for structured storage of historical data (open price, close price, volume) and efficient querying.
+- Data is organized by stock symbol and timestamp, enabling fast retrieval and analysis of historical performance.
+
+
+
+
+## Conclusion
+
+This stock market dashboard is a powerful tool designed to provide users with detailed, real-time insights into the performance of FAANG stocks. Through its interactive features, dynamic updates, and clear visualizations, the dashboard helps investors track stock performance, identify trends, and make informed decisions. The back-end architecture ensures that the data is fetched, processed, and presented efficiently, while the front-end visualization tools offer an intuitive and user-friendly experience.
+
+---
+
+## **Q1:** How can I add real-time data streaming to the dashboard for even more up-to-date stock information?
+
+## **Q2:** What are the best practices for securing financial data APIs used in the dashboard?
+
+## **Q3:** How can I implement machine learning models to predict stock price movements within the dashboard?
 
 
 
