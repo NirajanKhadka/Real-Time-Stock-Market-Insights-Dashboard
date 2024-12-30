@@ -41,6 +41,14 @@ The **Real-Time Stock Market Insights Dashboard** uses a combination of technolo
 
 ---
 
+
+<p align="center">
+  <img src="images/dfd_stock_market_dashboard.png">
+</p>
+
+
+---
+
 ### Getting Started
 
 To begin working with this project, follow the instructions below:
